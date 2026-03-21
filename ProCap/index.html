@@ -36,6 +36,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css">
 
+<!-- 新增代码部分 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <link rel="stylesheet" href="static/css/slit_module.css">
+
+  
+
+
+<!-- 结束新增 -->
   <style>
     .gradient-text {
       /* 字体大小 */
@@ -169,24 +178,25 @@
             <!-- <h3 class="title is-5 publication-title">IEEE VR 2026</h3> -->
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
-               <!-- <span class="author-block">
-                <a href="https://ZimoCao.github.io/" target="_blank">Zimo Cao</a><sup>1</sup>,</span>
+               <span class="author-block">
+                <a href="https://ZimoCao.github.io/" target="_blank">Zimo Cao</a><sup>1*</sup>,</span>
               <span class="author-block">
-                <a href="https://yuchendeng.com/" target="_blank">Yuchen Deng</a><sup>1</sup>,</span>
+                <a href="https://yuchendeng.com/" target="_blank">Yuchen Deng</a><sup>1*</sup>,</span>
               <span class="author-block">
                 <a href="https://haibinling.github.io/" target="_blank">Haibin Ling</a><sup>2</sup>,</span>
               <span class="author-block">
-                <a href="https://bingyaohuang.github.io/" target="_blank">Bingyao Huang</a><sup>1*</sup>
-              </span> -->
+                <a href="https://bingyaohuang.github.io/" target="_blank">Bingyao Huang</a><sup>1†</sup>
+              </span>
             </div>
 
             <div class="is-size-5 publication-authors">
-              <!-- <span class="author-block">
+              <span class="author-block">
                 <sup>1</sup>Southwest University
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <sup>2</sup>Westlake University
-              </span> -->
-              <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates the corresponding author</small></span> -->
+              </span>
+
+              <span class="eql-cntrb"><small><br><sup>*</sup>Equal contribution, <sup>†</sup>Corresponding author</span>
             </div>
 
             <div class="column has-text-centered">
@@ -262,7 +272,7 @@
       <div class="hero-body">
         <video poster="" id="tree" autoplay controls muted loop height="100%"> -->
           <!-- Your video here -->
-          <!-- <source src="static/videos/LAPIG_supply_1080p_compressed_man.mp4" type="video/mp4">
+          <!-- <source src="" type="video/mp4">
           <track src="static/videos/LAPIG_supply_1080p_compressed.vtt" kind="subtitles" srclang="en" label="English"
             default>
         </video> -->
@@ -281,10 +291,11 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Coming Soon...</h2>
+          <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
             <p>
              <!-- 放Abstract -->
+            Spatial augmented reality (SAR) directly projects digital content onto physical scenes using projectors, creating immersive experience without head-mounted displays. However, for SAR to support intelligent interaction, such as reasoning about the scene or answering user queries, it must semantically distinguish between the physical scene and the projected content. Standard Vision Language Models (VLMs) struggle with this virtual-physical ambiguity, often confusing the two contexts. To address this issue, we introduce ProCap, a novel framework that explicitly decouples projected content from physical scenes. ProCap employs a two-stage pipeline: first it visually isolates virtual and physical layers via automated segmentation; then it uses region-aware retrieval to avoid  ambiguous semantic context due to projection distortion. To support this, we present RGBP (RGB + Projections), the first large-scale SAR semantic benchmark dataset, featuring 65 diverse physical scenes and over 180,000 projections with dense, decoupled annotations. Finally, we establish a dual-captioning evaluation protocol using task-specific tokens to assess physical scene and projection descriptions independently. Our experiments show that ProCap provides a robust semantic foundation for future SAR research. 
             </p>
           </div>
           <!-- <h5>
@@ -518,6 +529,29 @@
         </div> -->
   </section>
 
+<!-- 新增 -->
+  <section class="section hero">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+            <div class="text-row">
+            <h2 class="title is-3">RGBP dataset</h2>
+            <p>The following examples are from RGBP dataset. <span class="blue-text"
+            style="font-family: 'Comic Sans MS'; font-size: 20px;">Try to move over the images ⤸</span> and observe
+          them.</p>
+            </div>
+
+        </div>
+      </div>
+    </div>
+                <section id="fluid-slit-container">
+            </section>
+  </section>
+
+
+<!-- 结束新增 -->
+
+
   <!-- Youtube video -->
   <!-- <section class="hero is-small is-light">
     <div class="hero-body">
@@ -585,18 +619,17 @@
 
 
   <!--BibTex citation -->
-  <!-- <section class="section" id="BibTeX">
+  <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>@ARTICLE{Deng2025LAPIG,
-  author  = {Cao, Zimo and Deng, Yuchen and Ling, Haibin and Huang, Bingyao},
-  journal = {IEEE Transactions on Visualization and Computer Graphics},
-  title   = {ProCap: Projection-Aware Captioning for Spatial Augmented Reality},
-  year    = {2026},
-  doi     = {10.1109/TVCG.2025.3549859}
+      <pre><code>@ARTICLE{Cao2026ProCap,
+  author    = {Cao, Zimo and Deng, Yuchen and Ling, Haibin and Huang, Bingyao},
+  booktitle = {2026 IEEE Conference on Virtual Reality and 3D User Interfaces (in press)},
+  title     = {ProCap: Projection-Aware Captioning for Spatial Augmented Reality},
+  year      = {2026},
 }</code></pre>
     </div>
-  </section> -->
+  </section>
   <!--End BibTex citation -->
 
 
@@ -708,6 +741,18 @@
       });
     };
   </script>
+
+  <!-- 新增 -->
+  <script src="static/js/slit_module.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="static/js/dataset_config.js"></script>
+  <script src="static/js/slit_module.js" defer></script>
+
+
+
+  <!-- 结束新增 -->
+
+
 </body>
 
 </html>
