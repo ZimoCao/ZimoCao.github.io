@@ -1,5 +1,3 @@
-/* static/js/slit_module.js - 防呆修复版 (自动注入样式 + 错误自检) */
-
 (function() {
     const CONFIG = {
         containerId: 'fluid-slit-container',
@@ -10,7 +8,6 @@
     let currentOpenDrawer = null;
     let activeGridItem = null;
     
-    // 弹窗相关变量
     let modalEl = null;
     let modalCoverImg = null;
     let modalDetailImg = null;
@@ -18,29 +15,24 @@
     function init() {
         if (!container) return;
         
-        // 1. 安全检查: GSAP 是否存在？
         if (typeof gsap === 'undefined') {
-            console.error("GSAP 未加载！尝试自动加载...");
-            // 如果你发现这里报错，请确保 HTML 头部引入了 gsap
-            alert("错误：动画库 GSAP 未加载，请检查网络或 index.html 中的 script 标签。");
+            console.error("GSAP not loaded! Attempting auto-load...");
+            alert("Error: Animation library GSAP is not loaded. Please check your network or the script tags in index.html.");
             return;
         }
 
-        // 2. 检查配置文件
         if (typeof DATASET_MANIFEST === 'undefined') {
-            console.error("未找到配置。请运行 python scan_images.py");
-            container.innerHTML = '<p style="text-align:center; padding:50px;">未找到图片索引，请运行 scan_images.py</p>';
+            console.error("Configuration not found. Please run: python scan_images.py");
+            container.innerHTML = '<p style="text-align:center; padding:50px;">Image index not found. Please run scan_images.py</p>';
             return;
         }
 
-        // 3. 初始化弹窗 (包含自动样式注入)
         createModalDOM();
 
-        // 4. 清空并生成网格
         container.innerHTML = '';
         const folders = Object.keys(DATASET_MANIFEST);
         
-        console.log(`正在加载 ${folders.length} 个文件夹...`);
+        console.log(`Loading ${folders.length} folders...`);
 
         folders.forEach((folderName, index) => {
             const imageList = DATASET_MANIFEST[folderName];
@@ -50,7 +42,6 @@
         });
     }
 
-    // --- 核心修复：直接通过 JS 注入弹窗样式 (防止 CSS 缓存问题) ---
     function injectModalStyles() {
         if (document.getElementById('modal-auto-style')) return;
         const style = document.createElement('style');
@@ -93,7 +84,6 @@
             return;
         }
 
-        // 先注入样式
         injectModalStyles();
 
         const html = `
@@ -117,7 +107,6 @@
         modalCoverImg = modalEl.querySelector('.modal-cover-img');
         modalDetailImg = modalEl.querySelector('.modal-detail-img');
 
-        // 绑定关闭
         const closeBtn = modalEl.querySelector('.close-btn');
         const closeModal = () => {
             gsap.to(modalEl, {
@@ -140,7 +129,6 @@
         
         const coverSrc = `${CONFIG.imagePathRoot}${folderName}/${imageList[0]}`;
         
-        // 双层图片
         const wrapper = document.createElement('div');
         wrapper.className = 'img-wrapper';
         const imgBase = document.createElement('img');
@@ -154,7 +142,6 @@
         indicator.className = 'scrub-indicator';
         item.appendChild(indicator);
 
-        // Hover Scrubbing
         item.addEventListener('mousemove', (e) => {
             const rect = item.getBoundingClientRect();
             let percent = (e.clientX - rect.left) / rect.width;
@@ -185,12 +172,12 @@
     }
 
     function toggleDrawer(clickedItem, folderName, imageList) {
-        // 选中高亮
+        
         if (activeGridItem) activeGridItem.classList.remove('is-active');
         if (activeGridItem === clickedItem) { activeGridItem = null; }
         else { clickedItem.classList.add('is-active'); activeGridItem = clickedItem; }
 
-        // 关闭旧抽屉
+        
         if (currentOpenDrawer) {
             const prev = currentOpenDrawer;
             gsap.to(prev, { height: 0, opacity: 0, duration: 0.4, onComplete: () => prev.remove() });
@@ -198,7 +185,7 @@
             if (prev.dataset.triggerId === clickedItem.dataset.id) return;
         }
 
-        // 寻找插入位置
+        
         const allItems = Array.from(container.querySelectorAll('.grid-item'));
         let insertAfter = allItems[allItems.length - 1];
         for (let i = 0; i < allItems.length; i++) {
@@ -211,7 +198,7 @@
         const content = document.createElement('div');
         content.className = 'slit-content';
 
-        // 过滤掉封面图 (从第1张开始)
+        
         const detailImages = imageList.slice(1);
         const coverSrc = `${CONFIG.imagePathRoot}${folderName}/${imageList[0]}`;
 
@@ -221,11 +208,10 @@
             const imgSrc = `${CONFIG.imagePathRoot}${folderName}/${fileName}`;
             detailImg.src = imgSrc;
             detailImg.loading = "lazy";
-            detailImg.style.cursor = "zoom-in"; // 鼠标变成放大镜
+            detailImg.style.cursor = "zoom-in";
             
-            // --- 绑定点击事件 ---
             detailImg.onclick = function(e) {
-                // 阻止事件冒泡 (防止触发其他奇怪的点击逻辑)
+                
                 e.stopPropagation();
                 showComparison(coverSrc, imgSrc);
             };
@@ -243,20 +229,17 @@
 
     function showComparison(coverSrc, detailSrc) {
         if (!modalEl) {
-            alert("错误：弹窗模块未初始化，请刷新页面重试。");
+            alert("Error: Modal module not initialized. Please refresh the page and try again.");
             return;
         }
         
-        console.log("正在打开对比图:", detailSrc);
+        console.log("Opening comparison view:", detailSrc);
 
-        // 设置图片
         modalCoverImg.src = coverSrc;
         modalDetailImg.src = detailSrc;
 
-        // 显示
         modalEl.style.display = 'flex';
         
-        // 动画
         gsap.fromTo(modalEl, { opacity: 0 }, { opacity: 1, duration: 0.3 });
         gsap.fromTo([modalCoverImg, modalDetailImg], 
             { scale: 0.95, opacity: 0 }, 
@@ -264,7 +247,6 @@
         );
     }
 
-    // 延迟一小会儿执行，确保 HTML 结构就绪
     setTimeout(init, 50);
 
 })();
