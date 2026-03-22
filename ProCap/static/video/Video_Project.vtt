@@ -1,0 +1,958 @@
+WEBVTT
+
+
+1
+00:00:00,170 --> 00:00:02,893
+Hello, everyone. Today I'm excited to
+
+2
+00:00:02,893 --> 00:00:05,161
+present ProCap: Projection-Aware Captioning
+
+3
+00:00:05,161 --> 00:00:07,884
+for Spatial Augmented Reality, a joint
+
+4
+00:00:07,884 --> 00:00:10,153
+work from Southwest University and
+
+5
+00:00:10,153 --> 00:00:11,060
+Westlake University.
+
+6
+00:00:11,769 --> 00:00:14,716
+I'll start with the motivation behind SAR
+
+7
+00:00:14,716 --> 00:00:17,243
+captioning, introduce our RGBP dataset
+
+8
+00:00:17,243 --> 00:00:19,349
+and ProCap method, then share
+
+9
+00:00:19,349 --> 00:00:21,454
+quantitative and qualitative results, and
+
+10
+00:00:21,454 --> 00:00:23,139
+finally summarize our contributions.
+
+11
+00:00:24,410 --> 00:00:26,349
+Spatial Augmented Reality projects
+
+12
+00:00:26,349 --> 00:00:28,772
+digital content directly onto physical
+
+13
+00:00:28,772 --> 00:00:31,195
+scenes, no headsets required. From
+
+14
+00:00:31,195 --> 00:00:33,134
+interactive exhibitions to industrial
+
+15
+00:00:33,134 --> 00:00:36,041
+design, SAR is transforming how we
+
+16
+00:00:36,041 --> 00:00:37,980
+blend virtual and real.
+
+17
+00:00:38,699 --> 00:00:41,275
+When setting a projector in physical
+
+18
+00:00:41,275 --> 00:00:43,851
+scene, the geometric and color distortion
+
+19
+00:00:43,851 --> 00:00:46,428
+is not negligible. Raskar and co-authors
+
+20
+00:00:46,428 --> 00:00:49,004
+enabled projection on non-flat objects
+
+21
+00:00:49,004 --> 00:00:50,721
+through geometric and radiometric
+
+22
+00:00:50,721 --> 00:00:52,439
+calibration. Grundhöfer and Iwai
+
+23
+00:00:52,439 --> 00:00:54,156
+developed photometric compensation using
+
+24
+00:00:54,156 --> 00:00:56,733
+pixel-wise thin plate-splines for
+
+25
+00:00:56,733 --> 00:00:58,880
+RGB sampling. Conversely, Huang and
+
+26
+00:00:58,880 --> 00:01:00,885
+co-authors proposed a calibration system
+
+27
+00:01:00,885 --> 00:01:02,767
+overcoming noise from parameter errors
+
+28
+00:01:02,767 --> 00:01:05,026
+and non-flat plates inherent in
+
+29
+00:01:05,026 --> 00:01:05,779
+traditional methods.
+
+30
+00:01:06,637 --> 00:01:09,078
+Beyond traditional SAR device, Nomoto and
+
+31
+00:01:09,078 --> 00:01:11,111
+co-authors used multiple high speed
+
+32
+00:01:11,111 --> 00:01:12,738
+projectors with each projector's
+
+33
+00:01:12,738 --> 00:01:15,179
+intensity control in dynamic SAR scenes,
+
+34
+00:01:15,179 --> 00:01:17,212
+achieving adaptive shadow removal. Huang
+
+35
+00:01:17,212 --> 00:01:20,059
+and Ling proposed an end-to-end
+
+36
+00:01:20,059 --> 00:01:22,906
+trainable model to apply an image-based
+
+37
+00:01:22,906 --> 00:01:24,533
+relighting, projector compensation, and
+
+38
+00:01:24,533 --> 00:01:26,160
+death/normal reconstruction
+
+39
+00:01:26,160 --> 00:01:28,347
+simultaneously, waiving the need for
+
+40
+00:01:28,347 --> 00:01:29,927
+additional optical devices, radiometric
+
+41
+00:01:29,927 --> 00:01:31,507
+calibrations, and structured light.
+
+42
+00:01:31,507 --> 00:01:33,877
+Kusuyama and co-authors proposed a large
+
+43
+00:01:33,877 --> 00:01:36,247
+aperture projection system using a large
+
+44
+00:01:36,247 --> 00:01:38,617
+format Fresnel lens to optically removes
+
+45
+00:01:38,617 --> 00:01:40,987
+the cast shadow and projection mapping.
+
+46
+00:01:41,583 --> 00:01:44,087
+In creative arts, SAR extends static
+
+47
+00:01:44,087 --> 00:01:46,591
+visual display toward the manipulation of
+
+48
+00:01:46,591 --> 00:01:48,678
+human perception and real time
+
+49
+00:01:48,678 --> 00:01:51,182
+interaction. Kaminokado and co-authors
+
+50
+00:01:51,182 --> 00:01:53,686
+used specular reflection to modify glossy
+
+51
+00:01:53,686 --> 00:01:55,773
+surface appearances, while Erel and
+
+52
+00:01:55,773 --> 00:01:57,860
+co-authors projected dynamic 3D content
+
+53
+00:01:57,860 --> 00:02:00,364
+onto hands. Deng and co-authors introduced
+
+54
+00:02:00,364 --> 00:02:02,523
+language guided image generation with
+
+55
+00:02:02,523 --> 00:02:04,983
+surface adaptation, and Peng and co-authors
+
+56
+00:02:04,983 --> 00:02:07,033
+developed high-speed, perceptually aligned
+
+57
+00:02:07,033 --> 00:02:07,853
+facial mapping.
+
+58
+00:02:08,468 --> 00:02:11,264
+Despite their visual appeal, most SAR
+
+59
+00:02:11,264 --> 00:02:14,060
+systems rely on high-fidelity pre-scanned
+
+60
+00:02:14,060 --> 00:02:15,657
+geometries and content specifically
+
+61
+00:02:15,657 --> 00:02:18,054
+authored for fixed scenes. To transition
+
+62
+00:02:18,054 --> 00:02:20,051
+to autonomous instruction-aware agents,
+
+63
+00:02:20,051 --> 00:02:22,048
+SAR must semantically understand arbitrary
+
+64
+00:02:22,048 --> 00:02:24,843
+scenes and project content based on user
+
+65
+00:02:24,843 --> 00:02:26,840
+intent and internal reasoning. Vision
+
+66
+00:02:26,840 --> 00:02:28,984
+language models present a promising
+
+67
+00:02:28,984 --> 00:02:30,648
+foundation for this evolution.
+
+68
+00:02:31,502 --> 00:02:33,799
+Consider this, a SAR scene contains
+
+69
+00:02:33,799 --> 00:02:36,095
+both a physical scene and projected
+
+70
+00:02:36,095 --> 00:02:38,008
+content. An ideal captioning system
+
+71
+00:02:38,008 --> 00:02:40,305
+should distinguish them. For example, "a
+
+72
+00:02:40,305 --> 00:02:42,984
+potted plant on a ledge" describes the
+
+73
+00:02:42,984 --> 00:02:45,663
+scene. "a dog standing in front of
+
+74
+00:02:45,663 --> 00:02:47,959
+a sink" describes the projection. However,
+
+75
+00:02:47,959 --> 00:02:49,872
+current VLM struggle with this.
+
+76
+00:02:50,496 --> 00:02:52,909
+Therefore, we identify three key
+
+77
+00:02:52,909 --> 00:02:54,840
+challenges. First, virtual physical
+
+78
+00:02:54,840 --> 00:02:57,736
+ambiguity. Without a mechanism to separate
+
+79
+00:02:57,736 --> 00:03:00,149
+projected virtual content from physical
+
+80
+00:03:00,149 --> 00:03:02,563
+environment, VLM suffer from virtual
+
+81
+00:03:02,563 --> 00:03:04,493
+physical ambiguity causing "merged"
+
+82
+00:03:04,493 --> 00:03:05,941
+descriptions. Second, perceptual
+
+83
+00:03:05,941 --> 00:03:08,355
+degradation due to projection. Various
+
+84
+00:03:08,355 --> 00:03:10,286
+geometric and photometric distortions
+
+85
+00:03:10,436 --> 00:03:12,776
+degrade image quality. This makes standard
+
+86
+00:03:12,776 --> 00:03:15,116
+VLM captioning unreliable. Third, lack of
+
+87
+00:03:15,116 --> 00:03:17,846
+SAR semantic benchmark dataset. There is
+
+88
+00:03:17,846 --> 00:03:20,186
+a lack of large-scale semantically
+
+89
+00:03:20,186 --> 00:03:22,916
+annotated dataset required to train and
+
+90
+00:03:22,916 --> 00:03:25,256
+evaluate models to interpret the complex
+
+91
+00:03:25,256 --> 00:03:26,036
+SAR scenes.
+
+92
+00:03:27,181 --> 00:03:30,044
+To address these, we propose: first,
+
+93
+00:03:30,044 --> 00:03:32,907
+ProCap framework two-stage pipeline
+
+94
+00:03:32,907 --> 00:03:35,292
+that decouples projection content from
+
+95
+00:03:35,292 --> 00:03:37,678
+physical scene via segmentation and
+
+96
+00:03:37,678 --> 00:03:40,541
+region-aware retrieval. Second, RGB dataset
+
+97
+00:03:40,541 --> 00:03:43,404
+, the first large-scale SAR
+
+98
+00:03:43,404 --> 00:03:46,267
+semantic benchmark with 65 scenes and
+
+99
+00:03:46,267 --> 00:03:48,936
+above 180,000 projections. Last,
+
+100
+00:03:48,936 --> 00:03:51,677
+dual-captioning protocol, task specific
+
+101
+00:03:51,677 --> 00:03:54,418
+tokens enable independent evaluation of
+
+102
+00:03:54,418 --> 00:03:56,611
+scene and projection descriptions.
+
+103
+00:03:58,161 --> 00:04:00,878
+RGBP stands for RGB + Projections.
+
+104
+00:04:00,878 --> 00:04:03,596
+We build RGBP dataset using
+
+105
+00:04:03,596 --> 00:04:06,314
+a projector camera system. In order
+
+106
+00:04:06,314 --> 00:04:09,032
+to simulate real-world distortions and
+
+107
+00:04:09,032 --> 00:04:11,296
+occlusions. We varied lighting, both
+
+108
+00:04:11,296 --> 00:04:14,014
+ambient light and RGB light panel
+
+109
+00:04:14,014 --> 00:04:16,279
+and geometry, projector's angle and
+
+110
+00:04:16,279 --> 00:04:18,091
+placement of physical objects.
+
+111
+00:04:19,824 --> 00:04:22,673
+Our RGBP dataset contains 60 seen
+
+112
+00:04:22,673 --> 00:04:25,521
+scenes for training and 5 unseen for
+
+113
+00:04:25,521 --> 00:04:28,370
+evaluation. We use COCO, nocaps and
+
+114
+00:04:28,370 --> 00:04:30,812
+WHOOPS! as projection sources. There are
+
+115
+00:04:30,812 --> 00:04:33,661
+more than 180,000 image pairs, each with
+
+116
+00:04:33,661 --> 00:04:36,509
+two ground-truth captions. Take 4 of
+
+117
+00:04:36,509 --> 00:04:38,544
+these scenes as an example.
+
+118
+00:04:40,280 --> 00:04:42,735
+In this figure, each column corresponds
+
+119
+00:04:42,735 --> 00:04:45,189
+to a different scene. Each sample
+
+120
+00:04:45,189 --> 00:04:47,644
+contains the physical scene Is, the
+
+121
+00:04:47,644 --> 00:04:50,507
+projected content Ip, and the image I
+
+122
+00:04:50,507 --> 00:04:52,553
+equals projected content + physical
+
+123
+00:04:52,553 --> 00:04:55,007
+scene. We can see the corresponding
+
+124
+00:04:55,007 --> 00:04:57,870
+binary mask Im for each SAR scene.
+
+125
+00:04:58,706 --> 00:05:01,413
+We again use an intuitive example to
+
+126
+00:05:01,413 --> 00:05:03,733
+demonstrate the process of physical scene
+
+127
+00:05:03,733 --> 00:05:05,280
+and projected content together
+
+128
+00:05:05,280 --> 00:05:06,826
+constituting an input image.
+
+129
+00:05:07,246 --> 00:05:09,885
+Unlike standard VLMs that produce one
+
+130
+00:05:09,885 --> 00:05:12,523
+merged caption, we want ProCap to
+
+131
+00:05:12,523 --> 00:05:14,721
+output two distinct captions. This
+
+132
+00:05:14,721 --> 00:05:16,919
+decoupling is essential for SAR
+
+133
+00:05:16,919 --> 00:05:19,118
+applications where virtual and physical
+
+134
+00:05:19,118 --> 00:05:20,876
+content serve different purposes.
+
+135
+00:05:22,531 --> 00:05:25,180
+Our goal can be briefly summarized as
+
+136
+00:05:25,180 --> 00:05:27,829
+follows: given I, we apply a
+
+137
+00:05:27,829 --> 00:05:30,100
+unified function F(I) to generate two
+
+138
+00:05:30,100 --> 00:05:32,371
+captions, where Cs represents the scene
+
+139
+00:05:32,371 --> 00:05:34,642
+caption and Cp represents the projection
+
+140
+00:05:34,642 --> 00:05:35,021
+caption.
+
+141
+00:05:39,161 --> 00:05:42,054
+The first stage is feature extraction and
+
+142
+00:05:42,054 --> 00:05:44,948
+segmentation. We use a frozen ViT-g encoder
+
+143
+00:05:44,948 --> 00:05:47,428
+to extract course features, refine them
+
+144
+00:05:47,428 --> 00:05:49,494
+via deconvolution, then apply a
+
+145
+00:05:49,494 --> 00:05:51,148
+lightweight segmentation module to
+
+146
+00:05:51,148 --> 00:05:54,041
+predict a course projection mask Im.
+
+147
+00:05:55,596 --> 00:05:58,367
+The second stage is region-aware
+
+148
+00:05:58,367 --> 00:06:01,139
+retrieval. We apply mask pooling to
+
+149
+00:06:01,139 --> 00:06:03,910
+isolate projection features, then use two
+
+150
+00:06:03,910 --> 00:06:06,220
+specialized Q-formers to generate
+
+151
+00:06:06,220 --> 00:06:08,529
+scene and projection embeddings, Qs and Qp
+
+152
+00:06:08,529 --> 00:06:11,300
+where Ts and Tp represent two sets of
+
+153
+00:06:11,300 --> 00:06:12,686
+learnable query tokens.
+
+154
+00:06:15,878 --> 00:06:18,344
+To combat projection distortions, we
+
+155
+00:06:18,344 --> 00:06:21,303
+retrieve clean semantic priors from an
+
+156
+00:06:21,303 --> 00:06:24,262
+external LVIS-based knowledge base. A
+
+157
+00:06:24,262 --> 00:06:26,728
+knowledge Q-former distills retrieved
+
+158
+00:06:26,728 --> 00:06:29,194
+object names into compact context
+
+159
+00:06:29,194 --> 00:06:31,659
+embeddings Qk, which augment the
+
+160
+00:06:31,659 --> 00:06:34,125
+projection features. Finally, we project
+
+161
+00:06:34,125 --> 00:06:36,990
+Qs, Qp, and Qk into the LLM's embedding space.
+
+162
+00:06:36,990 --> 00:06:39,868
+Then we get the final prompt H.
+
+163
+00:06:42,001 --> 00:06:44,842
+Task specific tokens [SCENE] and [PROJ]
+
+164
+00:06:44,842 --> 00:06:47,684
+condition of frozen decoder to auto
+
+165
+00:06:47,684 --> 00:06:50,051
+regressively generate the two captions
+
+166
+00:06:50,051 --> 00:06:52,419
+which ensure clear separation of
+
+167
+00:06:52,419 --> 00:06:54,314
+responsibilities. Operator [·;·] stands for
+
+168
+00:06:54,314 --> 00:06:57,155
+concatenation. Below it is the prompt
+
+169
+00:06:57,155 --> 00:06:59,996
+used by baselines in the experiment.
+
+170
+00:06:59,996 --> 00:07:02,891
+Finally a frozen LLM decoder D
+
+171
+00:07:02,891 --> 00:07:04,271
+generates the captions.
+
+172
+00:07:07,035 --> 00:07:09,844
+On 60 seen scenes with unseen
+
+173
+00:07:09,844 --> 00:07:11,716
+projections, ProCap variants outperform
+
+174
+00:07:11,716 --> 00:07:14,525
+off-the-shelf VLMs in scene
+
+175
+00:07:14,525 --> 00:07:16,866
+captioning. For example, ProCap-TinyLlama
+
+176
+00:07:16,866 --> 00:07:19,675
+achieves CIDEr scores about 70
+
+177
+00:07:19,675 --> 00:07:22,484
+on COCO and WHOOPS!, demonstrating robust
+
+178
+00:07:22,484 --> 00:07:24,357
+scene understanding despite projection
+
+179
+00:07:24,357 --> 00:07:24,825
+interference.
+
+180
+00:07:25,183 --> 00:07:28,167
+For projection captioning, the gap is
+
+181
+00:07:28,167 --> 00:07:31,151
+even larger. Baseline VLMS max out
+
+182
+00:07:31,151 --> 00:07:34,134
+at CIDEr about 11, while ProCap-
+
+183
+00:07:34,134 --> 00:07:37,118
+Vicuna-7B reaches 78.99. fine-tuned Qwen
+
+184
+00:07:37,118 --> 00:07:40,102
+3-VL on RGBP achieves 127,
+
+185
+00:07:40,102 --> 00:07:43,086
+highlighting the value of our data
+
+186
+00:07:43,086 --> 00:07:45,573
+set and region-aware retrieval.
+
+187
+00:07:49,475 --> 00:07:52,279
+On five unseen scenes, ProCap maintains
+
+188
+00:07:52,279 --> 00:07:54,148
+strong generalization, while scene
+
+189
+00:07:54,148 --> 00:07:56,951
+captioning sees modest gains due to
+
+190
+00:07:56,951 --> 00:07:57,885
+SAR complexity.
+
+191
+00:07:58,239 --> 00:08:00,047
+Projection captioning still shows
+
+192
+00:08:00,047 --> 00:08:01,854
+substantial improvements, confirming that
+
+193
+00:08:01,854 --> 00:08:04,566
+our retrieval mechanism works even with
+
+194
+00:08:04,566 --> 00:08:05,469
+novel content.
+
+195
+00:08:08,699 --> 00:08:11,341
+We evaluate ProCap-OpenLLaMA-3B against
+
+196
+00:08:11,341 --> 00:08:13,982
+FastVLM-7B across three seen scene and
+
+197
+00:08:13,982 --> 00:08:16,624
+three unseen scenes for the comparison
+
+198
+00:08:16,624 --> 00:08:18,888
+chart of qualitative analysis of scene
+
+199
+00:08:18,888 --> 00:08:21,152
+caption. The area with the first
+
+200
+00:08:21,152 --> 00:08:23,039
+background color represents the seen
+
+201
+00:08:23,039 --> 00:08:25,681
+scene, and the area with the other
+
+202
+00:08:25,681 --> 00:08:27,568
+background color represents the unseen
+
+203
+00:08:27,568 --> 00:08:29,832
+scene. We then highlight the important
+
+204
+00:08:29,832 --> 00:08:31,985
+words in GT and the corresponding correct
+
+205
+00:08:31,985 --> 00:08:34,373
+statements for both sets of models in
+
+206
+00:08:34,373 --> 00:08:36,078
+light blue, while the corresponding
+
+207
+00:08:36,078 --> 00:08:38,125
+incorrect statements for both sets of
+
+208
+00:08:38,125 --> 00:08:40,513
+models are highlighted in red. We can
+
+209
+00:08:40,513 --> 00:08:42,559
+find that our ProCap performs better.
+
+210
+00:08:44,523 --> 00:08:46,633
+Similarly, for the comparison chart of
+
+211
+00:08:46,633 --> 00:08:48,040
+qualitative analysis of projection
+
+212
+00:08:48,040 --> 00:08:50,150
+caption, we also indicate light blue
+
+213
+00:08:50,150 --> 00:08:52,612
+highlight and red highlight. In turn, it
+
+214
+00:08:52,612 --> 00:08:55,426
+can be found that the performance of our
+
+215
+00:08:55,426 --> 00:08:56,833
+ProCap is also better.
+
+216
+00:08:57,812 --> 00:09:00,340
+We conduct a series of ablation
+
+217
+00:09:00,340 --> 00:09:02,446
+experiments to validate the individual
+
+218
+00:09:02,446 --> 00:09:04,552
+contributions of the dual captioning
+
+219
+00:09:04,552 --> 00:09:06,237
+strategy, the projection segmentation
+
+220
+00:09:06,237 --> 00:09:08,765
+module, and the region-aware retrieval
+
+221
+00:09:08,765 --> 00:09:11,292
+mechanism. The results in Tables (a) to (c)
+
+222
+00:09:11,292 --> 00:09:13,399
+demonstrate the effectiveness of the
+
+223
+00:09:13,399 --> 00:09:14,662
+three parts, respectively.
+
+224
+00:09:16,475 --> 00:09:18,617
+Moreover, for physical scenes where
+
+225
+00:09:18,617 --> 00:09:20,758
+projected content perfectly aligns with
+
+226
+00:09:20,758 --> 00:09:23,757
+the surface of the projected object in
+
+227
+00:09:23,757 --> 00:09:25,898
+SAR applications, we further evaluated
+
+228
+00:09:25,898 --> 00:09:28,897
+ProCap-Vicuna-1.5-7B's understanding of this
+
+229
+00:09:28,897 --> 00:09:31,467
+SAR application. These are the specific
+
+230
+00:09:31,467 --> 00:09:34,465
+results of two sets of SAR scenes.
+
+231
+00:09:35,755 --> 00:09:38,609
+In summary, we contribute the ProCap
+
+232
+00:09:38,609 --> 00:09:41,463
+framework, the RGBP dataset, and a
+
+233
+00:09:41,463 --> 00:09:43,094
+dual-captioning evaluation protocol.
+
+234
+00:09:43,094 --> 00:09:44,725
+Limitations include sensitivity to
+
+235
+00:09:44,725 --> 00:09:47,171
+segmentation accuracy and reliance on the
+
+236
+00:09:47,171 --> 00:09:49,617
+LVIS knowledge base. Directions for future
+
+237
+00:09:49,617 --> 00:09:52,381
+work. Thank you for your attention. Please
+
+238
+00:09:52,381 --> 00:09:54,741
+visit our project page for paper code and
+
+239
+00:09:54,741 --> 00:09:55,331
+dataset.
